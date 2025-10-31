@@ -1,130 +1,159 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Biblioteca de Cuentos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximamente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    body {
-      margin: 0;
-      background: #f5f5f5;
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      gap: 2rem;
-    }
-    .book {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      padding: 1rem;
-      text-align: center;
-    }
-    .book h2 {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-    }
-    .book iframe {
-      width: 100%;
-      height: 350px;
-      border: none;
-    }
-  </style>
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .icon {
+            font-size: 8rem;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        .social-links {
+            margin-top: 50px;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <h1>Fanzinoteca</h1>
-
-  <div class="grid">
-    <div class="book">
-      <h2>Hurbanistorias Fanzine</h2>
-      <h4>por @tintointravenoso</h4>
-      <iframe style="width:550px;height:350px" src="http://online.anyflip.com/druum/ugfx/"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="icon">🚀</div>
+        <h1>PRÓXIMAMENTE</h1>
+        <p class="subtitle">Estamos trabajando en algo increíble</p>
+        <p class="subtitle">¡Muy pronto!</p>
+        
+        <div class="social-links">
+            <a href="#" title="Facebook">📘</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="Email">✉️</a>
+        </div>
     </div>
 
-    <div class="book">
-      <h2>The hidden Meaning</h2>
-	<h4>por Liza</h4>
-      <iframe style="width:550px;height:350px" src="http://online.anyflip.com/druum/uoml/"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-    <div class="book">
-      <h2>(Fan)zine Vagonómico</h2>
-	<h4>por Colectivo Vagonómico</h4>
-      <iframe style="width:550px;height:350px" src="https://online.anyflip.com/gskkd/kxat/index.html"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-    <div class="book">
-      <h2>Hanyu Fanzine</h2>
-	<h4>por @caromon</h4>
-      <iframe style="width:550px;height:350px" src="http://online.anyflip.com/druum/mqhe/"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-    <div class="book">
-      <h2>Fanzine Lírico</h2>
-	<h4>por @caromon</h4>
-	<iframe style="width:550px;height:350px" src="http://online.anyflip.com/druum/citr/"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-    <div class="book">
-      <h2>Michi-zine</h2>
-	<h4>por @caromon</h4>
-      <iframe style="width:550px;height:350px" src="http://online.anyflip.com/druum/wgei/"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-    <div class="book">
-      <h2>Sombra de Brea</h2>
-	<h4>por @metaphora_nott</h4>
-      <iframe style="width:550px;height:350px" src="http://online.anyflip.com/gskkd/xgtn/"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-    <div class="book">
-      <h2>Sombra de Brea 2</h2>
-	<h4>por @metaphora_nott</h4>
-      <iframe style="width:550px;height:350px" src="https://online.anyflip.com/gskkd/dfyr/index.html"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-    <div class="book">
-      <h2>Sombra de Brea 3</h2>
-	<h4>por @metaphora_nott</h4>
-      <iframe style="width:550px;height:350px" src="https://online.anyflip.com/gskkd/pbot/index.html"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-    <div class="book">
-      <h2>Hijos del Calor y la Noche</h2>
-	<h4>por @_koriori</h4>
-      <iframe style="width:550px;height:350px" src="https://online.anyflip.com/gskkd/kgip/index.html"  
-		seamless="seamless" scrolling="no" frameborder="0" 
-		allowtransparency="true" allowfullscreen="true" ></iframe>
-    </div>
-
-  </div>
+    <script>
+        // Crear partículas animadas
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.width = Math.random() * 10 + 5 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = Math.random() * 4 + 4 + 's';
+            particlesContainer.appendChild(particle);
+        }
+    </script>
 </body>
 </html>
-
-
