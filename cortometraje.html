@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortometraje - Destellos</title>
+    <link href="https://fonts.cdnfonts.com/css/modeco-trial" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Modeco Trial', sans-serif;
+            background-color: #000000;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fondo de estrellas */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px white;
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(0) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-300px) translateY(300px);
+                opacity: 0;
+            }
+        }
+
+        /* Contenedor principal */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Menú de Navegación */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .navbar h2 {
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .navbar nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .navbar nav a:hover {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Contenedor principal del cortometraje */
+        .cortometraje-container {
+            max-width: 1200px;
+            margin: 120px auto 50px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .cortometraje-header {
+            margin-bottom: 20px;
+        }
+
+        .cortometraje-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1em;
+        }
+
+        .cortometraje-header p {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            letter-spacing: 0.05em;
+        }
+
+        /* Video Container */
+        .video-container {
+            background-color: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-label {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        /* Botones de acción */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            background-color: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 20px 40px;
+            font-size: 1rem;
+            font-family: 'Modeco Trial', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.1em;
+        }
+
+        .action-button:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .action-button.primary {
+            background-color: white;
+            color: black;
+            border-color: white;
+        }
+
+        .action-button.primary:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Info adicional */
+        .info-section {
+            margin: 40px 0;
+            padding: 30px;
+            background-color: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .info-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            letter-spacing: 0.1em;
+        }
+
+        .info-section p {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 40px 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 2px solid rgba(255, 255, 255, 0.15);
+            margin-top: auto;
+        }
+
+        footer span {
+            margin: 0 20px;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar h2 {
+                font-size: 1.2rem;
+            }
+
+            .navbar nav a {
+                margin: 0 10px;
+                font-size: 0.9rem;
+            }
+
+            .cortometraje-header h1 {
+                font-size: 2rem;
+            }
+
+            .cortometraje-header p {
+                font-size: 1.2rem;
+            }
+
+            .video-container {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo de estrellas -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <!-- Menú de Navegación -->
+        <div class="navbar">
+            <h2>DESTELLOS</h2>
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="cortometraje.html">Cortometraje</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+        </div>
+
+        <!-- Contenedor del Cortometraje -->
+        <div class="cortometraje-container">
+            <div class="cortometraje-header">
+                <h1>MÓDULO 1: CORTOMETRAJE</h1>
+                <p>El Corazón de la Historia: La Animación</p>
+            </div>
+
+            <!-- Video Player -->
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <!-- Reemplaza VIDEO_ID con el ID real de tu video de YouTube -->
+                    <iframe 
+                        src="https://www.youtube.com/embed/VIDEO_ID" 
+                        title="Cortometraje Destellos" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="video-label">VIDEO PLAYER</p>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="info-section">
+                <h3>Sobre el Cortometraje</h3>
+                <p>
+                    Sumérgete en una historia única donde la animación cobra vida. 
+                    Este cortometraje representa el corazón de nuestro proyecto, 
+                    fusionando narrativa emocional con arte visual excepcional.
+                </p>
+            </div>
+
+            <!-- Enlace al canal de YouTube -->
+            <a href="https://www.youtube.com/@TU_CANAL" target="_blank" class="action-button primary">
+                Ver Cortometraje Completo en YouTube
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer id="contacto">
+            <span>© 2025 Destellos</span>
+            <span>DESTELLOS™</span>
+            <span><a href="#" style="color: white; text-decoration: none;">Términos y Condiciones</a></span>
+            <span><a href="#" style="color: white; text-decoration: none;">Privacidad</a></span>
+        </footer>
+    </div>
+
+    <script>
+        // Crear estrellas
+        const starsContainer = document.getElementById('stars');
+        
+        // Crear estrellas fijas que parpadean
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = Math.random() * 3 + 2 + 's';
+            starsContainer.appendChild(star);
+        }
+        
+        // Crear estrellas fugaces
+        function createShootingStar() {
+            const shootingStar = document.createElement('div');
+            shootingStar.classList.add('shooting-star');
+            shootingStar.style.left = Math.random() * 100 + '%';
+            shootingStar.style.top = Math.random() * 50 + '%';
+            shootingStar.style.animationDuration = Math.random() * 2 + 1 + 's';
+            starsContainer.appendChild(shootingStar);
+            
+            setTimeout(() => {
+                shootingStar.remove();
+            }, 3000);
+        }
+        
+        // Crear estrella fugaz cada cierto tiempo
+        setInterval(createShootingStar, 3000);
+    </script>
+</body>
+</html>
