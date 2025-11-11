@@ -9,7 +9,6 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     
     <style>
         * {
@@ -238,12 +237,6 @@
             margin-top: 20px;
         }
 
-        .modal-body img {
-            max-width: 100%;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 20px;
-        }
-
         .modal-body p {
             font-size: 1.1rem;
             line-height: 1.6;
@@ -272,9 +265,10 @@
             background-color: rgba(26, 26, 26, 0.8);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: 30px;
+            padding: 30px 20px;
             flex: 1;
-            min-width: 250px;
+            min-width: 200px;
+            max-width: 300px;
             text-align: center;
             transition: all 0.3s;
         }
@@ -285,14 +279,15 @@
         }
 
         .instruction-box h3 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-bottom: 10px;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.05em;
+            line-height: 1.4;
         }
 
         /* Formulario de participación */
         .participation-section {
-            max-width: 800px;
+            max-width: 600px;
             margin: 40px auto;
             padding: 40px;
             background-color: rgba(26, 26, 26, 0.8);
@@ -302,9 +297,9 @@
 
         .participation-section h2 {
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 30px;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
         }
 
         .form-group {
@@ -504,7 +499,6 @@
                 <h2 id="modalNombre"></h2>
             </div>
             <div class="modal-body">
-                <img id="modalImagen" src="" alt="" style="display: none;">
                 <p id="modalMensaje"></p>
                 <p class="modal-author" id="modalFecha"></p>
             </div>
@@ -515,20 +509,20 @@
         // ==========================================
         // CONFIGURACIÓN DE FIREBASE
         // ==========================================
+        // IMPORTANTE: Reemplaza estos valores con tu configuración de Firebase
+        // Ve a: Firebase Console > Project Settings > Your apps > Firebase SDK snippet
         const firebaseConfig = {
-          apiKey: "AIzaSyCwMJkPaiM3eS5Vt-yKGFMgMPcP1HAnK0Y",
-          authDomain: "universodestellos.firebaseapp.com",
-          projectId: "universodestellos",
-          storageBucket: "universodestellos.firebasestorage.app",
-          messagingSenderId: "702774673171",
-          appId: "1:702774673171:web:4180a3ae6edd022e0024e6",
-          measurementId: "G-PBSEZZQ4HP"
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_PROJECT_ID.firebaseapp.com",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_PROJECT_ID.appspot.com",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
         };
 
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         // ==========================================
         // CREAR ESTRELLAS DE FONDO
@@ -580,74 +574,62 @@
                 {
                     nombre: "María",
                     mensaje: "Este proyecto me recuerda a las noches estrelladas de mi infancia. ¡Hermoso trabajo!",
-                    fecha: "10 Nov 2025",
-                    imagenUrl: null
+                    fecha: "10 Nov 2025"
                 },
                 {
                     nombre: "Carlos",
                     mensaje: "La animación tocó mi corazón. Gracias por compartir esta luz con nosotros.",
-                    fecha: "10 Nov 2025",
-                    imagenUrl: null
+                    fecha: "10 Nov 2025"
                 },
                 {
                     nombre: "Ana",
                     mensaje: "Cada destello representa un recuerdo especial. Me encanta la idea.",
-                    fecha: "9 Nov 2025",
-                    imagenUrl: null
+                    fecha: "9 Nov 2025"
                 },
                 {
                     nombre: "Luis",
                     mensaje: "Impresionante cómo la tecnología puede capturar emociones tan profundas.",
-                    fecha: "9 Nov 2025",
-                    imagenUrl: null
+                    fecha: "9 Nov 2025"
                 },
                 {
                     nombre: "Sofia",
                     mensaje: "Este es el tipo de arte que necesitamos: auténtico y conmovedor.",
-                    fecha: "8 Nov 2025",
-                    imagenUrl: null
+                    fecha: "8 Nov 2025"
                 },
                 {
                     nombre: "Diego",
                     mensaje: "Me siento conectado con cada historia compartida aquí. ¡Brillante!",
-                    fecha: "8 Nov 2025",
-                    imagenUrl: null
+                    fecha: "8 Nov 2025"
                 },
                 {
                     nombre: "Elena",
                     mensaje: "Los destellos de memoria iluminan nuestro camino. Gracias por esto.",
-                    fecha: "7 Nov 2025",
-                    imagenUrl: null
+                    fecha: "7 Nov 2025"
                 },
                 {
                     nombre: "Miguel",
                     mensaje: "Una forma hermosa de mantener vivos los recuerdos. Seguiré contribuyendo.",
-                    fecha: "7 Nov 2025",
-                    imagenUrl: null
+                    fecha: "7 Nov 2025"
                 },
                 {
                     nombre: "Laura",
                     mensaje: "Cada chispa cuenta una historia diferente. Me encanta este concepto.",
-                    fecha: "6 Nov 2025",
-                    imagenUrl: null
+                    fecha: "6 Nov 2025"
                 },
                 {
                     nombre: "Pablo",
                     mensaje: "Esto va más allá de la animación, es una experiencia emocional completa.",
-                    fecha: "6 Nov 2025",
-                    imagenUrl: null
+                    fecha: "6 Nov 2025"
                 },
                 {
                     nombre: "Carmen",
                     mensaje: "Las memorias compartidas crean conexiones. Este proyecto lo demuestra.",
-                    fecha: "5 Nov 2025",
-                    imagenUrl: null
+                    fecha: "5 Nov 2025"
                 },
                 {
                     nombre: "Roberto",
                     mensaje: "Brillante en todos los sentidos. Literal y figurativamente.",
-                    fecha: "5 Nov 2025",
-                    imagenUrl: null
+                    fecha: "5 Nov 2025"
                 }
             ];
             generarDestellos();
@@ -767,14 +749,6 @@
             document.getElementById('modalMensaje').textContent = destello.mensaje;
             document.getElementById('modalFecha').textContent = destello.fecha;
             
-            const imagen = document.getElementById('modalImagen');
-            if (destello.imagenUrl) {
-                imagen.src = destello.imagenUrl;
-                imagen.style.display = 'block';
-            } else {
-                imagen.style.display = 'none';
-            }
-            
             modal.style.display = 'block';
         }
 
@@ -811,26 +785,44 @@
                     nombre = "Anónimo";
                 }
                 
-                // Guardar el destello en Firestore
-                await db.collection('destellos').add({
-                    nombre: nombre,
-                    mensaje: mensaje,
-                    imagenUrl: null,
-                    fecha: new Date().toLocaleDateString('es-ES', { 
-                        day: 'numeric', 
-                        month: 'short', 
-                        year: 'numeric' 
-                    }),
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                // Éxito
-                alert('¡Tu destello ha sido agregado! ✨');
-                document.getElementById('destelloForm').reset();
+                // Verificar si Firebase está configurado correctamente
+                if (firebaseConfig.apiKey === "TU_API_KEY") {
+                    // Firebase no configurado - modo demo local
+                    const nuevoDestello = {
+                        nombre: nombre,
+                        mensaje: mensaje,
+                        fecha: new Date().toLocaleDateString('es-ES', { 
+                            day: 'numeric', 
+                            month: 'short', 
+                            year: 'numeric' 
+                        })
+                    };
+                    
+                    destellosData.unshift(nuevoDestello);
+                    generarDestellos();
+                    
+                    alert('✨ ¡Tu destello ha sido agregado!\n\n⚠️ NOTA: Firebase no está configurado, por lo que este destello solo existe en tu navegador. Para guardar destellos permanentemente, configura Firebase según las instrucciones en FIREBASE_SETUP.md');
+                    document.getElementById('destelloForm').reset();
+                } else {
+                    // Firebase configurado - guardar en la base de datos
+                    await db.collection('destellos').add({
+                        nombre: nombre,
+                        mensaje: mensaje,
+                        fecha: new Date().toLocaleDateString('es-ES', { 
+                            day: 'numeric', 
+                            month: 'short', 
+                            year: 'numeric' 
+                        }),
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    alert('¡Tu destello ha sido agregado! ✨');
+                    document.getElementById('destelloForm').reset();
+                }
                 
             } catch (error) {
                 console.error("Error agregando destello:", error);
-                alert('Hubo un error al enviar tu destello. Por favor intenta de nuevo.');
+                alert('⚠️ Hubo un error al enviar tu destello.\n\nPosibles causas:\n• Firebase no está configurado correctamente\n• Las reglas de Firestore no permiten escritura\n• Problema de conexión\n\nRevisa la consola del navegador (F12) para más detalles.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Enviar Mi Destello';
