@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Momentos - Destellos</title>
+    <link href="https://fonts.cdnfonts.com/css/modeco-trial" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Modeco Trial', sans-serif;
+            background-color: #0a1628;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fondo de estrellas */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px #ffd700;
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(0) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-300px) translateY(300px);
+                opacity: 0;
+            }
+        }
+
+        /* Contenedor principal */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Menú de Navegación */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(5, 15, 30, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .navbar h2 {
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            cursor: pointer;
+        }
+
+        .navbar nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .navbar nav a:hover {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Header de la página */
+        .page-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
+                         0 0 60px rgba(255, 215, 0, 0.4);
+            letter-spacing: 0.1em;
+        }
+
+        .page-header p {
+            font-size: 1.5rem;
+            opacity: 0.85;
+            letter-spacing: 0.02em;
+            color: rgba(255, 215, 0, 0.8);
+        }
+
+        /* Contenedor principal */
+        .gallery-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 50px 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 60px;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            letter-spacing: 0.1em;
+        }
+
+        /* Grid de la galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            background-color: rgba(15, 30, 50, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item-info {
+            padding: 30px;
+        }
+
+        .gallery-item-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            letter-spacing: 0.05em;
+        }
+
+        .gallery-item-description {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .gallery-item-category {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            font-size: 0.85rem;
+            margin-top: 15px;
+            letter-spacing: 0.05em;
+        }
+
+        /* Modal para ver imagen completa */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: rgba(15, 30, 50, 0.95);
+            backdrop-filter: blur(10px);
+            margin: 3% auto;
+            padding: 40px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .modal-info {
+            background-color: rgba(15, 30, 50, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .modal-info h2 {
+            color: #ffd700;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            letter-spacing: 0.1em;
+        }
+
+        .modal-info p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .close:hover {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            transform: scale(1.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(5, 15, 30, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 2px solid rgba(255, 215, 0, 0.3);
+            margin-top: 60px;
+        }
+
+        footer span {
+            margin: 0 20px;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar h2 {
+                font-size: 1.2rem;
+            }
+
+            .navbar nav a {
+                margin: 0 10px;
+                font-size: 0.9rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1.2rem;
+            }
+
+            .gallery-container {
+                padding: 0 20px 20px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-top: 40px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+                margin: 10% auto;
+            }
+
+            .modal-info {
+                padding: 20px;
+            }
+
+            .close {
+                right: 20px;
+                font-size: 2rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 15px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo de estrellas -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <!-- Menú de Navegación -->
+        <div class="navbar">
+            <h2 onclick="window.location.href='index.html'">DESTELLOS</h2>
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="index.html#modulos">Proyectos</a>
+                <a href="index.html#contacto">Contacto</a>
+            </nav>
+        </div>
+
+        <!-- Header de la página -->
+        <div class="page-header">
+            <h1>GALERÍA DE MOMENTOS</h1>
+            <p>Cada imagen cuenta una historia</p>
+        </div>
+
+        <!-- Contenedor principal -->
+        <div class="gallery-container">
+            
+            <!-- Sección: Backgrounds -->
+            <h2 class="section-title">Escenarios Mágicos</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-title="Noche de Luces" data-description="Un árbol de navidad iluminado bajo un cielo estrellado, donde los sueños cobran vida con cada destello." data-image="assets/images/background_01.png" data-category="Escenario">
+                    <img src="assets/images/background_01.png" alt="Background 01">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Noche de Luces</div>
+                        <div class="gallery-item-description">Un árbol de navidad iluminado bajo un cielo estrellado...</div>
+                        <span class="gallery-item-category">Escenario</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Ciudad de Ensueño" data-description="La ciudad se viste de gala en la noche más especial del año, donde cada luz es un deseo cumplido." data-image="assets/images/background_02.png" data-category="Escenario">
+                    <img src="assets/images/background_02.png" alt="Background 02">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Ciudad de Ensueño</div>
+                        <div class="gallery-item-description">La ciudad se viste de gala en la noche más especial del año...</div>
+                        <span class="gallery-item-category">Escenario</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Luces Cálidas" data-description="Decoraciones doradas iluminan la noche, creando un ambiente acogedor lleno de esperanza y calidez." data-image="assets/images/background_03.png" data-category="Escenario">
+                    <img src="assets/images/background_03.png" alt="Background 03">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Luces Cálidas</div>
+                        <div class="gallery-item-description">Decoraciones doradas iluminan la noche, creando un ambiente acogedor...</div>
+                        <span class="gallery-item-category">Escenario</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección: Escena 1 - Takes -->
+            <h2 class="section-title">Escena 1: El Encuentro</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-title="La Espera" data-description="Sofía observa las luces de la ciudad, esperando que algo mágico suceda en esta noche especial." data-image="assets/images/Escena1_Take001.png" data-category="Escena 1">
+                    <img src="assets/images/Escena1_Take001.png" alt="Escena 1 Take 1">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">La Espera</div>
+                        <div class="gallery-item-description">Sofía observa las luces de la ciudad, esperando que algo mágico...</div>
+                        <span class="gallery-item-category">Escena 1</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Momento Compartido" data-description="Dos almas se encuentran bajo las luces navideñas, compartiendo un momento íntimo y especial." data-image="assets/images/Escena1_Take002.png" data-category="Escena 1">
+                    <img src="assets/images/Escena1_Take002.png" alt="Escena 1 Take 2">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Momento Compartido</div>
+                        <div class="gallery-item-description">Dos almas se encuentran bajo las luces navideñas...</div>
+                        <span class="gallery-item-category">Escena 1</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Miradas que Hablan" data-description="Una sonrisa ilumina la noche más que cualquier decoración. El primer destello de una conexión especial." data-image="assets/images/Escena1_Take003.png" data-category="Escena 1">
+                    <img src="assets/images/Escena1_Take003.png" alt="Escena 1 Take 3">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Miradas que Hablan</div>
+                        <div class="gallery-item-description">Una sonrisa ilumina la noche más que cualquier decoración...</div>
+                        <span class="gallery-item-category">Escena 1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección: Escena 2 - Takes -->
+            <h2 class="section-title">Escena 2: La Conexión</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-title="Reflexiones" data-description="Sofía contempla la ciudad iluminada, reflexionando sobre los momentos que nos marcan." data-image="assets/images/Escena2_Take001.png" data-category="Escena 2">
+                    <img src="assets/images/Escena2_Take001.png" alt="Escena 2 Take 1">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Reflexiones</div>
+                        <div class="gallery-item-description">Sofía contempla la ciudad iluminada, reflexionando sobre los momentos...</div>
+                        <span class="gallery-item-category">Escena 2</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Sorpresa Mágica" data-description="Un momento inesperado llena el aire de magia y posibilidades. Los destellos de la vida sorprenden." data-image="assets/images/Escena2_Take002.png" data-category="Escena 2">
+                    <img src="assets/images/Escena2_Take002.png" alt="Escena 2 Take 2">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Sorpresa Mágica</div>
+                        <div class="gallery-item-description">Un momento inesperado llena el aire de magia y posibilidades...</div>
+                        <span class="gallery-item-category">Escena 2</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Luz Interior" data-description="La verdadera magia no está en las luces de la ciudad, sino en los ojos de quien nos mira con cariño." data-image="assets/images/Escena2_Take003.png" data-category="Escena 2">
+                    <img src="assets/images/Escena2_Take003.png" alt="Escena 2 Take 3">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Luz Interior</div>
+                        <div class="gallery-item-description">La verdadera magia no está en las luces de la ciudad...</div>
+                        <span class="gallery-item-category">Escena 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección: Escena 3 - Takes -->
+            <h2 class="section-title">Escena 3: El Momento</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-title="Contemplación" data-description="En silencio, miramos hacia el mismo horizonte, conectados por algo más grande que nosotros." data-image="assets/images/Escena3_Take001.png" data-category="Escena 3">
+                    <img src="assets/images/Escena3_Take001.png" alt="Escena 3 Take 1">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Contemplación</div>
+                        <div class="gallery-item-description">En silencio, miramos hacia el mismo horizonte...</div>
+                        <span class="gallery-item-category">Escena 3</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Abrazo de Luz" data-description="Las luces de la ciudad parecen abrazar este momento perfecto de cercanía y calidez." data-image="assets/images/Escena3_Take002.png" data-category="Escena 3">
+                    <img src="assets/images/Escena3_Take002.png" alt="Escena 3 Take 2">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Abrazo de Luz</div>
+                        <div class="gallery-item-description">Las luces de la ciudad parecen abrazar este momento perfecto...</div>
+                        <span class="gallery-item-category">Escena 3</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Felicidad Radiante" data-description="Una sonrisa sincera que ilumina más que todas las luces navideñas juntas. La felicidad pura." data-image="assets/images/Escena3_Take003.png" data-category="Escena 3">
+                    <img src="assets/images/Escena3_Take003.png" alt="Escena 3 Take 3">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Felicidad Radiante</div>
+                        <div class="gallery-item-description">Una sonrisa sincera que ilumina más que todas las luces navideñas...</div>
+                        <span class="gallery-item-category">Escena 3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección: Escena 4 - Takes -->
+            <h2 class="section-title">Escena 4: El Recuerdo</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-title="Nostalgia Dulce" data-description="Recordando momentos pasados con una sonrisa, sabiendo que fueron reales y especiales." data-image="assets/images/Escena4_Take001.png" data-category="Escena 4">
+                    <img src="assets/images/Escena4_Take001.png" alt="Escena 4 Take 1">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Nostalgia Dulce</div>
+                        <div class="gallery-item-description">Recordando momentos pasados con una sonrisa...</div>
+                        <span class="gallery-item-category">Escena 4</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Juntos en el Recuerdo" data-description="Algunos momentos son tan especiales que permanecen en nosotros para siempre, como destellos eternos." data-image="assets/images/Escena4_Take002.png" data-category="Escena 4">
+                    <img src="assets/images/Escena4_Take002.png" alt="Escena 4 Take 2">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Juntos en el Recuerdo</div>
+                        <div class="gallery-item-description">Algunos momentos son tan especiales que permanecen en nosotros...</div>
+                        <span class="gallery-item-category">Escena 4</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Calidez del Alma" data-description="La luz interior que perdura más allá del tiempo, un destello que nunca se apaga." data-image="assets/images/Escena4_Take003.png" data-category="Escena 4">
+                    <img src="assets/images/Escena4_Take003.png" alt="Escena 4 Take 3">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Calidez del Alma</div>
+                        <div class="gallery-item-description">La luz interior que perdura más allá del tiempo...</div>
+                        <span class="gallery-item-category">Escena 4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección: Personajes - Diseño de Personajes -->
+            <h2 class="section-title">Los Personajes</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-title="Papá - Diseño de Personaje" data-description="Turnaround completo del personaje paterno, mostrando todas las expresiones y ángulos." data-image="assets/images/ta_dad.png" data-category="Personaje">
+                    <img src="assets/images/ta_dad.png" alt="Diseño Papá">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Papá - Diseño</div>
+                        <div class="gallery-item-description">Turnaround completo del personaje paterno...</div>
+                        <span class="gallery-item-category">Personaje</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Mamá - Diseño de Personaje" data-description="Diseño detallado del personaje materno con todas sus expresiones y poses." data-image="assets/images/ta_mom.png" data-category="Personaje">
+                    <img src="assets/images/ta_mom.png" alt="Diseño Mamá">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Mamá - Diseño</div>
+                        <div class="gallery-item-description">Diseño detallado del personaje materno...</div>
+                        <span class="gallery-item-category">Personaje</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Sofía - 8 años" data-description="Sofía de niña, llena de curiosidad y alegría. El inicio de nuestra historia." data-image="assets/images/ta_sofia_8.png" data-category="Personaje">
+                    <img src="assets/images/ta_sofia_8.png" alt="Sofía 8 años">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Sofía - 8 años</div>
+                        <div class="gallery-item-description">Sofía de niña, llena de curiosidad y alegría...</div>
+                        <span class="gallery-item-category">Personaje</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Sofía - 16 años" data-description="Sofía adolescente, descubriendo el mundo y a sí misma con cada experiencia." data-image="assets/images/ta_sofia_16.png" data-category="Personaje">
+                    <img src="assets/images/ta_sofia_16.png" alt="Sofía 16 años">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Sofía - 16 años</div>
+                        <div class="gallery-item-description">Sofía adolescente, descubriendo el mundo y a sí misma...</div>
+                        <span class="gallery-item-category">Personaje</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Sofía - 24 años" data-description="Sofía joven adulta, con toda su personalidad y estilo único desarrollados." data-image="assets/images/ta_sofia_24.png" data-category="Personaje">
+                    <img src="assets/images/ta_sofia_24.png" alt="Sofía 24 años">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Sofía - 24 años</div>
+                        <div class="gallery-item-description">Sofía joven adulta, con toda su personalidad...</div>
+                        <span class="gallery-item-category">Personaje</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-title="Sofía - 32 años" data-description="Sofía madura, llevando consigo todos los destellos de su vida. Diseño completo con expresiones." data-image="assets/images/ta_sofia_32.png" data-category="Personaje">
+                    <img src="assets/images/ta_sofia_32.png" alt="Sofía 32 años">
+                    <div class="gallery-item-info">
+                        <div class="gallery-item-title">Sofía - 32 años</div>
+                        <div class="gallery-item-description">Sofía madura, llevando consigo todos los destellos de su vida...</div>
+                        <span class="gallery-item-category">Personaje</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer id="contacto">
+            <span>© 2025 Destellos</span>
+            <span>DESTELLOS™</span>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <a href="https://www.youtube.com/@universodestellos" target="_blank" rel="noopener noreferrer" title="YouTube" style="text-decoration: none; color: white; transition: all 0.3s;">
+                    <div style="display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 50%; transition: all 0.3s;" onmouseover="this.style.borderColor='white'; this.style.transform='scale(1.15)'; this.style.boxShadow='0 0 15px rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.5)'; this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </div>
+                </a>
+                <a href="https://www.instagram.com/universodestellos?igsh=eXZmYnk0bHk3Mm5n" target="_blank" rel="noopener noreferrer" title="Instagram" style="text-decoration: none; color: white; transition: all 0.3s;">
+                    <div style="display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 50%; transition: all 0.3s;" onmouseover="this.style.borderColor='white'; this.style.transform='scale(1.15)'; this.style.boxShadow='0 0 15px rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.5)'; this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal para vista ampliada -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" src="" alt="">
+            <div class="modal-info">
+                <h2 id="modalTitle"></h2>
+                <p id="modalDescription"></p>
+                <span id="modalCategory" class="gallery-item-category"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Crear estrellas fijas que parpadean
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = Math.random() * 3 + 2 + 's';
+            starsContainer.appendChild(star);
+        }
+        
+        // Crear estrellas fugaces
+        function createShootingStar() {
+            const shootingStar = document.createElement('div');
+            shootingStar.classList.add('shooting-star');
+            shootingStar.style.left = Math.random() * 100 + '%';
+            shootingStar.style.top = Math.random() * 50 + '%';
+            shootingStar.style.animationDuration = Math.random() * 2 + 1 + 's';
+            starsContainer.appendChild(shootingStar);
+            
+            setTimeout(() => {
+                shootingStar.remove();
+            }, 3000);
+        }
+        
+        // Crear estrella fugaz cada cierto tiempo
+        setInterval(createShootingStar, 3000);
+
+        // Modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalCategory = document.getElementById('modalCategory');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        // Abrir modal al hacer clic en una imagen
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                modal.style.display = 'block';
+                modalImg.src = this.dataset.image;
+                modalTitle.textContent = this.dataset.title;
+                modalDescription.textContent = this.dataset.description;
+                modalCategory.textContent = this.dataset.category;
+            });
+        });
+
+        // Cerrar modal
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Cerrar con tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
