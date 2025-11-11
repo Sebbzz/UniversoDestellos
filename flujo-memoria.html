@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flujo de Memoria - Destellos</title>
     <link href="https://fonts.cdnfonts.com/css/modeco-trial" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -127,8 +133,7 @@
             width: 50px;
             height: 50px;
             cursor: pointer;
-            transition: all 0.3s;
-            animation: float 4s ease-in-out infinite;
+            transition: transform 0.2s;
         }
 
         .destello-sparkle {
@@ -165,17 +170,9 @@
         }
 
         .destello:hover {
-            transform: scale(1.3);
-            filter: brightness(1.5);
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
+            transform: scale(1.5);
+            filter: brightness(1.8);
+            z-index: 100;
         }
 
         /* Modal para mostrar comentario/foto */
@@ -477,8 +474,8 @@
             <h2>PARTICIPAR</h2>
             <form id="destelloForm">
                 <div class="form-group">
-                    <label for="nombre">Tu Nombre</label>
-                    <input type="text" id="nombre" name="nombre" required placeholder="Escribe tu nombre...">
+                    <label for="nombre">Tu Nombre (Opcional)</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Anónimo">
                 </div>
 
                 <div class="form-group">
@@ -520,7 +517,28 @@
     </div>
 
     <script>
-        // Crear estrellas de fondo
+        // ==========================================
+        // CONFIGURACIÓN DE FIREBASE
+        // ==========================================
+        // IMPORTANTE: Reemplaza estos valores con tu configuración de Firebase
+        // Ve a: Firebase Console > Project Settings > Your apps > Firebase SDK snippet
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_PROJECT_ID.firebaseapp.com",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_PROJECT_ID.appspot.com",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // ==========================================
+        // CREAR ESTRELLAS DE FONDO
+        // ==========================================
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 200; i++) {
             const star = document.createElement('div');
@@ -535,107 +553,215 @@
             starsContainer.appendChild(star);
         }
 
-        // Sistema de destellos
-        let destellosData = [
-            {
-                nombre: "María",
-                mensaje: "Este proyecto me recuerda a las noches estrelladas de mi infancia. ¡Hermoso trabajo!",
-                fecha: "10 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Carlos",
-                mensaje: "La animación tocó mi corazón. Gracias por compartir esta luz con nosotros.",
-                fecha: "10 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Ana",
-                mensaje: "Cada destello representa un recuerdo especial. Me encanta la idea.",
-                fecha: "9 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Luis",
-                mensaje: "Impresionante cómo la tecnología puede capturar emociones tan profundas.",
-                fecha: "9 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Sofia",
-                mensaje: "Este es el tipo de arte que necesitamos: auténtico y conmovedor.",
-                fecha: "8 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Diego",
-                mensaje: "Me siento conectado con cada historia compartida aquí. ¡Brillante!",
-                fecha: "8 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Elena",
-                mensaje: "Los destellos de memoria iluminan nuestro camino. Gracias por esto.",
-                fecha: "7 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Miguel",
-                mensaje: "Una forma hermosa de mantener vivos los recuerdos. Seguiré contribuyendo.",
-                fecha: "7 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Laura",
-                mensaje: "Cada chispa cuenta una historia diferente. Me encanta este concepto.",
-                fecha: "6 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Pablo",
-                mensaje: "Esto va más allá de la animación, es una experiencia emocional completa.",
-                fecha: "6 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Carmen",
-                mensaje: "Las memorias compartidas crean conexiones. Este proyecto lo demuestra.",
-                fecha: "5 Nov 2025",
-                imagen: null
-            },
-            {
-                nombre: "Roberto",
-                mensaje: "Brillante en todos los sentidos. Literal y figurativamente.",
-                fecha: "5 Nov 2025",
-                imagen: null
-            }
-        ];
+        // ==========================================
+        // SISTEMA DE DESTELLOS CON FIREBASE
+        // ==========================================
+        let destellosData = [];
+        let destellosElements = [];
+        let animationFrameId = null;
 
-        // Generar destellos en el contenedor
+        // Cargar destellos desde Firebase
+        function cargarDestellos() {
+            db.collection('destellos')
+                .orderBy('timestamp', 'desc')
+                .onSnapshot((snapshot) => {
+                    destellosData = [];
+                    snapshot.forEach((doc) => {
+                        destellosData.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+                    generarDestellos();
+                }, (error) => {
+                    console.error("Error cargando destellos:", error);
+                    // Si hay error, mostrar destellos de ejemplo
+                    cargarDestellosEjemplo();
+                });
+        }
+
+        // Destellos de ejemplo (fallback si Firebase no está configurado)
+        function cargarDestellosEjemplo() {
+            destellosData = [
+                {
+                    nombre: "María",
+                    mensaje: "Este proyecto me recuerda a las noches estrelladas de mi infancia. ¡Hermoso trabajo!",
+                    fecha: "10 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Carlos",
+                    mensaje: "La animación tocó mi corazón. Gracias por compartir esta luz con nosotros.",
+                    fecha: "10 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Ana",
+                    mensaje: "Cada destello representa un recuerdo especial. Me encanta la idea.",
+                    fecha: "9 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Luis",
+                    mensaje: "Impresionante cómo la tecnología puede capturar emociones tan profundas.",
+                    fecha: "9 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Sofia",
+                    mensaje: "Este es el tipo de arte que necesitamos: auténtico y conmovedor.",
+                    fecha: "8 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Diego",
+                    mensaje: "Me siento conectado con cada historia compartida aquí. ¡Brillante!",
+                    fecha: "8 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Elena",
+                    mensaje: "Los destellos de memoria iluminan nuestro camino. Gracias por esto.",
+                    fecha: "7 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Miguel",
+                    mensaje: "Una forma hermosa de mantener vivos los recuerdos. Seguiré contribuyendo.",
+                    fecha: "7 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Laura",
+                    mensaje: "Cada chispa cuenta una historia diferente. Me encanta este concepto.",
+                    fecha: "6 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Pablo",
+                    mensaje: "Esto va más allá de la animación, es una experiencia emocional completa.",
+                    fecha: "6 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Carmen",
+                    mensaje: "Las memorias compartidas crean conexiones. Este proyecto lo demuestra.",
+                    fecha: "5 Nov 2025",
+                    imagenUrl: null
+                },
+                {
+                    nombre: "Roberto",
+                    mensaje: "Brillante en todos los sentidos. Literal y figurativamente.",
+                    fecha: "5 Nov 2025",
+                    imagenUrl: null
+                }
+            ];
+            generarDestellos();
+        }
+
+        // Generar destellos en el contenedor con física de rebotes
         function generarDestellos() {
             const container = document.getElementById('destellosContainer');
             container.innerHTML = '';
+            
+            // Detener animación anterior si existe
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            
+            destellosElements = [];
+            const containerRect = container.getBoundingClientRect();
 
             destellosData.forEach((destello, index) => {
                 const destelloElement = document.createElement('div');
                 destelloElement.classList.add('destello');
                 
-                // Posición aleatoria pero dentro del contenedor
-                const randomX = Math.random() * 85 + 5; // 5-90%
-                const randomY = Math.random() * 85 + 5; // 5-90%
-                destelloElement.style.left = randomX + '%';
-                destelloElement.style.top = randomY + '%';
+                // Propiedades físicas para cada destello
+                const physics = {
+                    x: Math.random() * (containerRect.width - 50),
+                    y: Math.random() * (containerRect.height - 50),
+                    vx: (Math.random() - 0.5) * 2, // velocidad X
+                    vy: (Math.random() - 0.5) * 2, // velocidad Y
+                    element: destelloElement,
+                    index: index,
+                    size: 50
+                };
                 
-                // Delay aleatorio para animación
-                destelloElement.style.animationDelay = Math.random() * 2 + 's';
-                
+                destelloElement.style.left = physics.x + 'px';
+                destelloElement.style.top = physics.y + 'px';
                 destelloElement.innerHTML = '<div class="destello-sparkle"></div>';
                 
                 // Click para mostrar modal
                 destelloElement.addEventListener('click', () => mostrarDestello(index));
                 
                 container.appendChild(destelloElement);
+                destellosElements.push(physics);
             });
+            
+            // Iniciar animación
+            animarDestellos();
+        }
+
+        // Función de animación con física de rebotes
+        function animarDestellos() {
+            const container = document.getElementById('destellosContainer');
+            const containerRect = container.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+            const containerHeight = containerRect.height;
+            
+            destellosElements.forEach((destello) => {
+                // Actualizar posición
+                destello.x += destello.vx;
+                destello.y += destello.vy;
+                
+                // Rebote en los bordes
+                if (destello.x <= 0 || destello.x >= containerWidth - destello.size) {
+                    destello.vx *= -1;
+                    destello.x = Math.max(0, Math.min(containerWidth - destello.size, destello.x));
+                }
+                
+                if (destello.y <= 0 || destello.y >= containerHeight - destello.size) {
+                    destello.vy *= -1;
+                    destello.y = Math.max(0, Math.min(containerHeight - destello.size, destello.y));
+                }
+                
+                // Colisiones entre destellos
+                destellosElements.forEach((otro) => {
+                    if (destello !== otro) {
+                        const dx = otro.x - destello.x;
+                        const dy = otro.y - destello.y;
+                        const distancia = Math.sqrt(dx * dx + dy * dy);
+                        
+                        // Si están muy cerca, se repelen
+                        if (distancia < destello.size) {
+                            const angulo = Math.atan2(dy, dx);
+                            const fuerza = (destello.size - distancia) * 0.05;
+                            
+                            destello.vx -= Math.cos(angulo) * fuerza;
+                            destello.vy -= Math.sin(angulo) * fuerza;
+                        }
+                    }
+                });
+                
+                // Limitar velocidad máxima
+                const velocidadMaxima = 3;
+                const velocidadActual = Math.sqrt(destello.vx * destello.vx + destello.vy * destello.vy);
+                if (velocidadActual > velocidadMaxima) {
+                    destello.vx = (destello.vx / velocidadActual) * velocidadMaxima;
+                    destello.vy = (destello.vy / velocidadActual) * velocidadMaxima;
+                }
+                
+                // Aplicar fricción suave
+                destello.vx *= 0.999;
+                destello.vy *= 0.999;
+                
+                // Actualizar posición en el DOM
+                destello.element.style.left = destello.x + 'px';
+                destello.element.style.top = destello.y + 'px';
+            });
+            
+            // Continuar animación
+            animationFrameId = requestAnimationFrame(animarDestellos);
         }
 
         // Mostrar modal con información del destello
@@ -648,8 +774,8 @@
             document.getElementById('modalFecha').textContent = destello.fecha;
             
             const imagen = document.getElementById('modalImagen');
-            if (destello.imagen) {
-                imagen.src = destello.imagen;
+            if (destello.imagenUrl) {
+                imagen.src = destello.imagenUrl;
                 imagen.style.display = 'block';
             } else {
                 imagen.style.display = 'none';
@@ -672,44 +798,68 @@
             }
         }
 
-        // Manejar envío de formulario
-        document.getElementById('destelloForm').addEventListener('submit', function(e) {
+        // ==========================================
+        // MANEJAR ENVÍO DE FORMULARIO CON FIREBASE
+        // ==========================================
+        document.getElementById('destelloForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const nombre = document.getElementById('nombre').value;
-            const mensaje = document.getElementById('mensaje').value;
-            const fotoInput = document.getElementById('foto');
+            const submitBtn = e.target.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
             
-            // En un sistema real, aquí enviarías los datos a un servidor
-            // Por ahora, lo agregamos localmente
-            const nuevoDestello = {
-                nombre: nombre,
-                mensaje: mensaje,
-                fecha: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }),
-                imagen: null
-            };
-            
-            // Si hay una foto, leerla
-            if (fotoInput.files && fotoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    nuevoDestello.imagen = e.target.result;
-                    destellosData.push(nuevoDestello);
-                    generarDestellos();
-                    alert('¡Tu destello ha sido agregado! ✨');
-                    document.getElementById('destelloForm').reset();
+            try {
+                let nombre = document.getElementById('nombre').value.trim();
+                const mensaje = document.getElementById('mensaje').value;
+                const fotoInput = document.getElementById('foto');
+                
+                // Si no hay nombre, usar "Anónimo"
+                if (!nombre) {
+                    nombre = "Anónimo";
                 }
-                reader.readAsDataURL(fotoInput.files[0]);
-            } else {
-                destellosData.push(nuevoDestello);
-                generarDestellos();
+                
+                let imagenUrl = null;
+                
+                // Si hay una foto, subirla a Firebase Storage
+                if (fotoInput.files && fotoInput.files[0]) {
+                    const file = fotoInput.files[0];
+                    const timestamp = Date.now();
+                    const storageRef = storage.ref(`destellos/${timestamp}_${file.name}`);
+                    
+                    submitBtn.textContent = 'Subiendo imagen...';
+                    const snapshot = await storageRef.put(file);
+                    imagenUrl = await snapshot.ref.getDownloadURL();
+                }
+                
+                // Guardar el destello en Firestore
+                submitBtn.textContent = 'Guardando destello...';
+                await db.collection('destellos').add({
+                    nombre: nombre,
+                    mensaje: mensaje,
+                    imagenUrl: imagenUrl,
+                    fecha: new Date().toLocaleDateString('es-ES', { 
+                        day: 'numeric', 
+                        month: 'short', 
+                        year: 'numeric' 
+                    }),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Éxito
                 alert('¡Tu destello ha sido agregado! ✨');
                 document.getElementById('destelloForm').reset();
+                
+            } catch (error) {
+                console.error("Error agregando destello:", error);
+                alert('Hubo un error al enviar tu destello. Por favor intenta de nuevo.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Mi Destello';
             }
         });
 
-        // Generar destellos iniciales
-        generarDestellos();
+        // Iniciar la carga de destellos
+        cargarDestellos();
     </script>
 </body>
 </html>
