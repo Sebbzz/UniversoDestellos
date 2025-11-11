@@ -502,22 +502,36 @@
             <div class="module">
                 <h2>Flujo de Memoria</h2>
                 <p style="color: rgba(255, 215, 0, 0.8); font-size: 1.1rem; letter-spacing: 0.05em; margin-bottom: 25px;">Comparte tu destello con nosotros</p>
-                <div class="memory-grid">
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
-                    <div class="memory-cell"></div>
+                <div class="memory-grid" style="position: relative; height: 200px; display: block;">
+                    <!-- Destellos flotantes como preview -->
+                    <div style="position: absolute; width: 30px; height: 30px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 20%; left: 10%; animation: float1 3s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 25px; height: 25px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 60%; left: 25%; animation: float2 3.5s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 35px; height: 35px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 35%; left: 45%; animation: float3 2.8s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 28px; height: 28px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 15%; left: 65%; animation: float1 3.2s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 32px; height: 32px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 55%; left: 75%; animation: float2 2.5s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 26px; height: 26px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 70%; left: 50%; animation: float3 3.8s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 29px; height: 29px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 40%; left: 80%; animation: float1 2.9s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 33px; height: 33px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 25%; left: 35%; animation: float2 3.3s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 27px; height: 27px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 80%; left: 15%; animation: float3 3.1s ease-in-out infinite;"></div>
+                    <div style="position: absolute; width: 31px; height: 31px; background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.6) 40%, transparent 70%); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); top: 50%; left: 60%; animation: float1 2.7s ease-in-out infinite;"></div>
                 </div>
                 <a href="flujo-memoria.html" class="cta-button" style="display: inline-block; text-decoration: none; margin-top: 20px;">Explorar</a>
             </div>
+
+            <style>
+                @keyframes float1 {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-15px); }
+                }
+                @keyframes float2 {
+                    0%, 100% { transform: translateY(0px) translateX(0px); }
+                    50% { transform: translateY(-20px) translateX(10px); }
+                }
+                @keyframes float3 {
+                    0%, 100% { transform: translateY(0px) translateX(0px); }
+                    50% { transform: translateY(-10px) translateX(-8px); }
+                }
+            </style>
 
             <!-- Módulo 4: Galería de Momentos -->
             <div class="module">
