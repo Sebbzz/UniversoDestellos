@@ -459,7 +459,7 @@
         <!-- Instrucciones -->
         <div class="instructions">
             <div class="instruction-box">
-                <h3>Paso 1: Sube tu foto/video</h3>
+                <h3>Paso 1: Escribe tu mensaje</h3>
             </div>
             <div class="instruction-box">
                 <h3>Paso 2: Usa #DestellosDeMemoria</h3>
@@ -481,11 +481,6 @@
                 <div class="form-group">
                     <label for="mensaje">Tu Mensaje o Recuerdo</label>
                     <textarea id="mensaje" name="mensaje" required placeholder="Comparte tu memoria..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="foto">Sube una Foto (Opcional)</label>
-                    <input type="file" id="foto" name="foto" accept="image/*">
                 </div>
 
                 <button type="submit" class="submit-btn">Enviar Mi Destello</button>
@@ -520,15 +515,15 @@
         // ==========================================
         // CONFIGURACIÓN DE FIREBASE
         // ==========================================
-
+        // IMPORTANTE: Reemplaza estos valores con tu configuración de Firebase
+        // Ve a: Firebase Console > Project Settings > Your apps > Firebase SDK snippet
         const firebaseConfig = {
-          apiKey: "AIzaSyCwMJkPaiM3eS5Vt-yKGFMgMPcP1HAnK0Y",
-          authDomain: "universodestellos.firebaseapp.com",
-          projectId: "universodestellos",
-          storageBucket: "universodestellos.firebasestorage.app",
-          messagingSenderId: "702774673171",
-          appId: "1:702774673171:web:4180a3ae6edd022e0024e6",
-          measurementId: "G-PBSEZZQ4HP"
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_PROJECT_ID.firebaseapp.com",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_PROJECT_ID.appspot.com",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
         };
 
         // Inicializar Firebase
@@ -811,32 +806,17 @@
             try {
                 let nombre = document.getElementById('nombre').value.trim();
                 const mensaje = document.getElementById('mensaje').value;
-                const fotoInput = document.getElementById('foto');
                 
                 // Si no hay nombre, usar "Anónimo"
                 if (!nombre) {
                     nombre = "Anónimo";
                 }
                 
-                let imagenUrl = null;
-                
-                // Si hay una foto, subirla a Firebase Storage
-                if (fotoInput.files && fotoInput.files[0]) {
-                    const file = fotoInput.files[0];
-                    const timestamp = Date.now();
-                    const storageRef = storage.ref(`destellos/${timestamp}_${file.name}`);
-                    
-                    submitBtn.textContent = 'Subiendo imagen...';
-                    const snapshot = await storageRef.put(file);
-                    imagenUrl = await snapshot.ref.getDownloadURL();
-                }
-                
                 // Guardar el destello en Firestore
-                submitBtn.textContent = 'Guardando destello...';
                 await db.collection('destellos').add({
                     nombre: nombre,
                     mensaje: mensaje,
-                    imagenUrl: imagenUrl,
+                    imagenUrl: null,
                     fecha: new Date().toLocaleDateString('es-ES', { 
                         day: 'numeric', 
                         month: 'short', 
