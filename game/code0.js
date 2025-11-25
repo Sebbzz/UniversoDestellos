@@ -1045,7 +1045,7 @@ let isConditionTrue_0 = false;
 {
 gdjs.copyArray(runtimeScene.getObjects("ScoreText"), gdjs.LevelCode.GDScoreTextObjects2);
 {for(var i = 0, len = gdjs.LevelCode.GDScoreTextObjects2.length ;i < len;++i) {
-    gdjs.LevelCode.GDScoreTextObjects2[i].getBehavior("Text").setText("Score: " + gdjs.evtTools.variable.getVariableString(runtimeScene.getScene().getVariables().getFromIndex(0)));
+    gdjs.LevelCode.GDScoreTextObjects2[i].getBehavior("Text").setText("Puntuación: " + gdjs.evtTools.variable.getVariableString(runtimeScene.getScene().getVariables().getFromIndex(0)));
 }
 }
 }
