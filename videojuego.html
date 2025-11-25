@@ -113,94 +113,141 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
 
-        /* Contenedor central */
-        .coming-soon-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* Contenedor del videojuego */
+        .videojuego-container {
+            max-width: 1400px;
+            margin: 120px auto 50px;
+            padding: 40px 20px;
             text-align: center;
-            padding: 120px 20px 50px;
         }
 
-        .coming-soon-content {
-            max-width: 800px;
-            background-color: rgba(15, 30, 50, 0.9);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            padding: 80px 60px;
-            transition: all 0.3s;
-        }
-
-        .coming-soon-content:hover {
-            border-color: rgba(255, 215, 0, 0.6);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-        }
-
-        .game-icon {
-            font-size: 5rem;
-            margin-bottom: 30px;
-            opacity: 0.3;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.6;
-                transform: scale(1.1);
-            }
-        }
-
-        h1 {
-            font-size: 4rem;
+        .videojuego-header {
             margin-bottom: 20px;
+        }
+
+        .videojuego-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
             color: #ffd700;
             text-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
                          0 0 60px rgba(255, 215, 0, 0.4);
             letter-spacing: 0.1em;
         }
 
-        .subtitle {
-            font-size: 2rem;
-            margin-bottom: 40px;
+        .videojuego-header p {
+            font-size: 1.5rem;
             opacity: 0.85;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.02em;
             color: rgba(255, 215, 0, 0.8);
         }
 
-        .description {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            opacity: 0.8;
-            margin-bottom: 50px;
+        /* Game Container */
+        .game-container {
+            background-color: rgba(15, 30, 50, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            padding: 20px;
+            margin: 40px 0;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
         }
 
-        .back-button {
+        .game-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #000;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .game-wrapper iframe {
+            display: block;
+            width: 100%;
+            height: 720px;
+            border: none;
+        }
+
+        .game-label {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: rgba(255, 215, 0, 0.7);
+        }
+
+        /* Botón de pantalla completa */
+        .fullscreen-button {
             background-color: #ffd700;
             color: #0a1628;
-            padding: 18px 50px;
-            font-size: 1.1rem;
+            padding: 12px 30px;
+            font-size: 1rem;
             border: none;
             cursor: pointer;
             font-family: 'Modeco Trial', sans-serif;
             transition: all 0.3s;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            text-decoration: none;
-            display: inline-block;
+            margin-top: 20px;
         }
 
-        .back-button:hover {
+        .fullscreen-button:hover {
             background-color: #ffed4e;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Info adicional */
+        .info-section {
+            margin: 40px 0;
+            padding: 30px;
+            background-color: rgba(15, 30, 50, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .info-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            letter-spacing: 0.1em;
+            color: #ffd700;
+        }
+
+        .info-section p {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        .controls-list {
+            text-align: left;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(10, 22, 40, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .controls-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .controls-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .controls-list li:last-child {
+            border-bottom: none;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-right: 10px;
         }
 
         /* Footer */
@@ -223,6 +270,12 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .game-wrapper iframe {
+                height: 600px;
+            }
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 padding: 15px 20px;
@@ -237,44 +290,39 @@
                 font-size: 0.9rem;
             }
 
-            .coming-soon-content {
-                padding: 60px 30px;
+            .videojuego-header h1 {
+                font-size: 2rem;
             }
 
-            h1 {
-                font-size: 2.5rem;
+            .videojuego-header p {
+                font-size: 1.2rem;
             }
 
-            .subtitle {
-                font-size: 1.5rem;
+            .game-container {
+                padding: 15px;
             }
 
-            .game-icon {
-                font-size: 3.5rem;
-            }
-
-            .description {
-                font-size: 1rem;
+            .game-wrapper iframe {
+                height: 450px;
             }
 
             footer {
                 flex-direction: column;
                 gap: 15px;
-                padding: 30px 20px;
             }
         }
 
         @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem;
+            .game-wrapper iframe {
+                height: 350px;
             }
 
-            .subtitle {
-                font-size: 1.2rem;
+            .videojuego-header h1 {
+                font-size: 1.5rem;
             }
 
-            .coming-soon-content {
-                padding: 40px 20px;
+            .info-section {
+                padding: 20px;
             }
         }
     </style>
@@ -295,18 +343,50 @@
             </nav>
         </div>
 
-        <!-- Contenedor Coming Soon -->
-        <div class="coming-soon-container">
-            <div class="coming-soon-content">
-                <div class="game-icon">🎮</div>
-                <h1>PRÓXIMAMENTE</h1>
-                <p class="subtitle">Videojuego en Desarrollo</p>
-                <p class="description">
-                    Estamos trabajando en una experiencia interactiva única que te permitirá 
-                    sumergirte en el universo de Destellos. Pronto podrás explorar, descubrir 
-                    y crear tus propios momentos memorables.
+        <!-- Contenedor del Videojuego -->
+        <div class="videojuego-container">
+            <div class="videojuego-header">
+                <h1>MÓDULO 2: VIDEOJUEGO</h1>
+                <p>Vive la Experiencia Interactiva</p>
+            </div>
+
+            <!-- Game Player -->
+            <div class="game-container">
+                <div class="game-wrapper" id="gameWrapper">
+                    <!-- El juego de GDevelop se cargará aquí -->
+                    <iframe 
+                        src="game/index.html" 
+                        title="Destellos - El Juego" 
+                        allowfullscreen
+                        allow="autoplay; gamepad; microphone; camera"
+                        id="gameFrame">
+                    </iframe>
+                </div>
+                <p class="game-label">JUEGO INTERACTIVO</p>
+                <button class="fullscreen-button" onclick="toggleFullscreen()">Pantalla Completa</button>
+            </div>
+
+            <!-- Controles del juego -->
+            <div class="info-section">
+                <h3>Controles del Juego</h3>
+                <div class="controls-list">
+                    <ul>
+                        <li><span class="key">FLECHAS</span> o <span class="key">WASD</span> - Movimiento</li>
+                        <li><span class="key">ESPACIO</span> - Acción / Saltar</li>
+                        <li><span class="key">ENTER</span> - Interactuar</li>
+                        <li><span class="key">ESC</span> - Pausa</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="info-section">
+                <h3>Sobre el Juego</h3>
+                <p>
+                    Sumérgete en una aventura única donde explorarás el mundo de Destellos. 
+                    Descubre historias ocultas, resuelve enigmas y crea momentos memorables 
+                    en esta experiencia interactiva diseñada especialmente para ti.
                 </p>
-                <a href="index.html" class="back-button">Volver al Inicio</a>
             </div>
         </div>
 
@@ -365,6 +445,25 @@
         
         // Crear estrella fugaz cada cierto tiempo
         setInterval(createShootingStar, 3000);
+
+        // Función para pantalla completa
+        function toggleFullscreen() {
+            const gameWrapper = document.getElementById('gameWrapper');
+            
+            if (!document.fullscreenElement) {
+                if (gameWrapper.requestFullscreen) {
+                    gameWrapper.requestFullscreen();
+                } else if (gameWrapper.webkitRequestFullscreen) {
+                    gameWrapper.webkitRequestFullscreen();
+                } else if (gameWrapper.msRequestFullscreen) {
+                    gameWrapper.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
     </script>
 </body>
 </html>
