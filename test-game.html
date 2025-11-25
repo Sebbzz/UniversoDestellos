@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test - Prueba de Carga del Juego</title>
+    <title>Diagnóstico Avanzado - GDevelop</title>
     <style>
         body {
             margin: 0;
@@ -14,7 +14,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
@@ -23,11 +23,27 @@
             text-align: center;
         }
         
-        .test-section {
+        .section {
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             margin: 20px 0;
             border-radius: 10px;
+            border: 2px solid #ffd700;
+        }
+        
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #f00;
+        }
+        
+        .success {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #0f0;
+        }
+        
+        .warning {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
         }
         
         iframe {
@@ -37,11 +53,13 @@
             border: 2px solid #ffd700;
         }
         
-        .info {
-            background: rgba(255, 215, 0, 0.1);
+        pre {
+            background: #000;
+            color: #0f0;
             padding: 15px;
-            margin: 15px 0;
-            border-left: 4px solid #ffd700;
+            overflow-x: auto;
+            font-size: 12px;
+            border: 1px solid #ffd700;
         }
         
         button {
@@ -58,147 +76,199 @@
             background: #ffed4e;
         }
         
-        #console {
-            background: #000;
-            color: #0f0;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 12px;
-            height: 200px;
+        .file-list {
+            max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #ffd700;
-            margin-top: 20px;
+        }
+        
+        .file-item {
+            padding: 5px;
+            margin: 2px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .file-item.exists {
+            color: #0f0;
+        }
+        
+        .file-item.missing {
+            color: #f00;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎮 Prueba de Carga del Juego - Destellos</h1>
+        <h1>🔍 Diagnóstico Avanzado - GDevelop Game</h1>
         
-        <div class="info">
-            <strong>📍 Ruta actual del juego:</strong> <code id="currentPath">game/index.html</code><br>
-            <strong>📊 Estado:</strong> <span id="status">Cargando...</span>
+        <div class="section">
+            <h2>📋 Resumen del Problema</h2>
+            <p>El archivo <code>game/index.html</code> se carga correctamente (507 caracteres), pero el juego no se muestra.</p>
+            <p><strong>Posibles causas:</strong></p>
+            <ul>
+                <li>Faltan archivos JavaScript del juego (code0.js, code1.js, etc.)</li>
+                <li>Faltan recursos (imágenes, sonidos) en la carpeta assets/</li>
+                <li>El juego necesita archivos de la carpeta libs/</li>
+                <li>Hay errores de JavaScript que impiden la ejecución</li>
+            </ul>
         </div>
-        
-        <div class="test-section">
-            <h2>Controles de Prueba</h2>
-            <button onclick="testPath('game/index.html')">Probar: game/index.html</button>
-            <button onclick="testPath('GAME/index.html')">Probar: GAME/index.html</button>
-            <button onclick="testPath('./game/index.html')">Probar: ./game/index.html</button>
-            <button onclick="reloadFrame()">🔄 Recargar</button>
-            <button onclick="clearConsole()">🗑️ Limpiar Consola</button>
-        </div>
-        
-        <div class="test-section">
-            <h2>Visor del Juego</h2>
+
+        <div class="section">
+            <h2>🎮 Visor del Juego</h2>
             <iframe 
                 id="gameFrame" 
                 src="game/index.html"
-                title="Test Game"
+                title="Game"
                 allowfullscreen
                 allow="autoplay; gamepad; microphone; camera">
             </iframe>
+            <button onclick="checkIframeErrors()">🔍 Revisar Errores del Iframe</button>
         </div>
-        
-        <div class="test-section">
-            <h2>📝 Consola de Diagnóstico</h2>
-            <div id="console"></div>
+
+        <div class="section" id="errorSection" style="display: none;">
+            <h2>⚠️ Errores Detectados en la Consola del Juego</h2>
+            <pre id="iframeErrors"></pre>
+        </div>
+
+        <div class="section">
+            <h2>📁 Archivos Requeridos por GDevelop</h2>
+            <p>Verificando si los archivos necesarios existen...</p>
+            <button onclick="checkFiles()">🔄 Verificar Archivos</button>
+            <div id="fileChecks" class="file-list"></div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Contenido de game/index.html</h2>
+            <button onclick="fetchIndexContent()">Ver Contenido</button>
+            <pre id="indexContent"></pre>
+        </div>
+
+        <div class="section warning">
+            <h2>✅ Soluciones Recomendadas</h2>
+            <ol>
+                <li><strong>Verifica que TODOS los archivos estén en GitHub:</strong>
+                    <ul>
+                        <li>game/index.html ✓</li>
+                        <li>game/code0.js, code1.js, code2.js, etc.</li>
+                        <li>game/libs/ (carpeta completa)</li>
+                        <li>game/assets/ (carpeta completa con imágenes/sonidos)</li>
+                    </ul>
+                </li>
+                <li><strong>Si falta algún archivo:</strong> Súbelo a GitHub en la misma estructura</li>
+                <li><strong>Si todos los archivos están:</strong> Verifica la consola del navegador (F12) para ver errores de JavaScript</li>
+            </ol>
         </div>
     </div>
 
     <script>
-        const consoleDiv = document.getElementById('console');
-        const statusSpan = document.getElementById('status');
-        const currentPathSpan = document.getElementById('currentPath');
-        
-        function log(message, type = 'info') {
-            const timestamp = new Date().toLocaleTimeString();
-            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
-            consoleDiv.innerHTML += `[${timestamp}] ${prefix} ${message}<br>`;
-            consoleDiv.scrollTop = consoleDiv.scrollHeight;
-        }
-        
-        function clearConsole() {
-            consoleDiv.innerHTML = '';
-            log('Consola limpiada');
-        }
-        
-        function testPath(path) {
-            const frame = document.getElementById('gameFrame');
-            currentPathSpan.textContent = path;
-            statusSpan.textContent = 'Cargando...';
-            statusSpan.style.color = '#ffd700';
+        const commonFiles = [
+            'game/index.html',
+            'game/code0.js',
+            'game/code1.js',
+            'game/code2.js',
+            'game/code3.js',
+            'game/code4.js',
+            'game/libs/pixi.js',
+            'game/libs/jshashtable.js',
+            'game/gd.js',
+            'game/gdjshotreloader.js',
+            'game/gdjs-evtsext__gamepads__gamepads.js'
+        ];
+
+        async function checkFiles() {
+            const fileChecksDiv = document.getElementById('fileChecks');
+            fileChecksDiv.innerHTML = '<p>Verificando archivos...</p>';
             
-            log(`Intentando cargar: ${path}`);
-            frame.src = path;
+            const results = [];
+            
+            for (const file of commonFiles) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    const exists = response.ok;
+                    results.push({
+                        file: file,
+                        exists: exists,
+                        status: response.status
+                    });
+                } catch (error) {
+                    results.push({
+                        file: file,
+                        exists: false,
+                        status: 'ERROR'
+                    });
+                }
+            }
+            
+            let html = '';
+            let missingFiles = 0;
+            
+            results.forEach(result => {
+                const className = result.exists ? 'exists' : 'missing';
+                const icon = result.exists ? '✅' : '❌';
+                html += `<div class="file-item ${className}">${icon} ${result.file} (${result.status})</div>`;
+                if (!result.exists) missingFiles++;
+            });
+            
+            if (missingFiles > 0) {
+                html = `<p style="color: #f00;">⚠️ Faltan ${missingFiles} archivos importantes!</p>` + html;
+            } else {
+                html = `<p style="color: #0f0;">✅ Todos los archivos comunes fueron encontrados</p>` + html;
+            }
+            
+            fileChecksDiv.innerHTML = html;
         }
-        
-        function reloadFrame() {
-            const frame = document.getElementById('gameFrame');
-            const currentSrc = frame.src;
-            log(`Recargando: ${currentSrc}`);
-            frame.src = '';
-            setTimeout(() => {
-                frame.src = currentSrc;
-            }, 100);
+
+        async function fetchIndexContent() {
+            const indexContentPre = document.getElementById('indexContent');
+            indexContentPre.textContent = 'Cargando...';
+            
+            try {
+                const response = await fetch('game/index.html');
+                const content = await response.text();
+                indexContentPre.textContent = content;
+            } catch (error) {
+                indexContentPre.textContent = 'Error: ' + error.message;
+            }
         }
-        
-        // Monitorear el estado del iframe
-        window.addEventListener('load', function() {
+
+        function checkIframeErrors() {
             const gameFrame = document.getElementById('gameFrame');
+            const errorSection = document.getElementById('errorSection');
+            const iframeErrors = document.getElementById('iframeErrors');
             
-            log('Página de prueba cargada');
-            log(`Intentando cargar juego desde: ${gameFrame.src}`);
-            
-            gameFrame.addEventListener('load', function() {
-                log('Evento load del iframe disparado', 'success');
-                statusSpan.textContent = 'Cargado ✓';
-                statusSpan.style.color = '#0f0';
+            try {
+                const iframeWindow = gameFrame.contentWindow;
+                const iframeConsole = [];
                 
-                // Verificar si el contenido está vacío
-                setTimeout(function() {
-                    try {
-                        const iframeDoc = gameFrame.contentDocument || gameFrame.contentWindow.document;
-                        if (iframeDoc.body) {
-                            const bodyContent = iframeDoc.body.innerHTML;
-                            if (bodyContent.trim() === '') {
-                                log('ADVERTENCIA: El iframe cargó pero el body está vacío', 'error');
-                                statusSpan.textContent = 'Cargado pero vacío ⚠️';
-                                statusSpan.style.color = '#ff0';
-                            } else {
-                                log(`Contenido del body detectado (${bodyContent.length} caracteres)`, 'success');
-                            }
-                        }
-                    } catch (e) {
-                        log(`No se puede acceder al contenido del iframe: ${e.message}`);
-                        log('Esto es normal si el juego está en un dominio diferente');
-                    }
+                // Intentar capturar errores del iframe
+                errorSection.style.display = 'block';
+                iframeErrors.textContent = 'Revisando errores...\n\n';
+                
+                // Verificar si hay errores en la consola
+                setTimeout(() => {
+                    iframeErrors.textContent += 'Para ver errores detallados:\n';
+                    iframeErrors.textContent += '1. Abre la Consola del Navegador (F12)\n';
+                    iframeErrors.textContent += '2. Ve a la pestaña "Console"\n';
+                    iframeErrors.textContent += '3. Busca errores en rojo que mencionen "game/" o archivos .js\n\n';
+                    iframeErrors.textContent += 'Los errores más comunes son:\n';
+                    iframeErrors.textContent += '- "Failed to load resource" → Falta un archivo\n';
+                    iframeErrors.textContent += '- "Uncaught ReferenceError" → Falta un script de GDevelop\n';
+                    iframeErrors.textContent += '- "NetworkError" → El archivo no está en GitHub\n';
                 }, 1000);
-            });
-            
-            gameFrame.addEventListener('error', function(e) {
-                log('Error al cargar el iframe', 'error');
-                statusSpan.textContent = 'Error ✗';
-                statusSpan.style.color = '#f00';
-            });
-            
-            // Verificar disponibilidad del archivo
-            fetch('game/index.html', { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        log('✅ El archivo game/index.html existe y es accesible', 'success');
-                    } else {
-                        log(`❌ Error HTTP ${response.status}: El archivo no está disponible`, 'error');
-                    }
-                })
-                .catch(error => {
-                    log(`❌ No se pudo verificar el archivo: ${error.message}`, 'error');
-                });
+                
+            } catch (e) {
+                iframeErrors.textContent = 'No se puede acceder directamente al iframe debido a restricciones de seguridad.\n\n';
+                iframeErrors.textContent += 'Abre la Consola del Navegador (F12) para ver los errores.';
+            }
+        }
+
+        // Auto-verificar archivos al cargar
+        window.addEventListener('load', function() {
+            setTimeout(checkFiles, 1000);
         });
-        
-        // Capturar errores de la consola del navegador
+
+        // Capturar errores globales
         window.addEventListener('error', function(e) {
-            log(`Error de JavaScript: ${e.message}`, 'error');
+            console.error('Error detectado:', e.message);
         });
     </script>
 </body>
