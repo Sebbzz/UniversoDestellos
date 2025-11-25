@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Prueba de Carga del Juego</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0a1628;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #ffd700;
+            text-align: center;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 600px;
+            background: #000;
+            border: 2px solid #ffd700;
+        }
+        
+        .info {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ffd700;
+        }
+        
+        button {
+            background: #ffd700;
+            color: #0a1628;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #ffed4e;
+        }
+        
+        #console {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ffd700;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Prueba de Carga del Juego - Destellos</h1>
+        
+        <div class="info">
+            <strong>📍 Ruta actual del juego:</strong> <code id="currentPath">game/index.html</code><br>
+            <strong>📊 Estado:</strong> <span id="status">Cargando...</span>
+        </div>
+        
+        <div class="test-section">
+            <h2>Controles de Prueba</h2>
+            <button onclick="testPath('game/index.html')">Probar: game/index.html</button>
+            <button onclick="testPath('GAME/index.html')">Probar: GAME/index.html</button>
+            <button onclick="testPath('./game/index.html')">Probar: ./game/index.html</button>
+            <button onclick="reloadFrame()">🔄 Recargar</button>
+            <button onclick="clearConsole()">🗑️ Limpiar Consola</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>Visor del Juego</h2>
+            <iframe 
+                id="gameFrame" 
+                src="game/index.html"
+                title="Test Game"
+                allowfullscreen
+                allow="autoplay; gamepad; microphone; camera">
+            </iframe>
+        </div>
+        
+        <div class="test-section">
+            <h2>📝 Consola de Diagnóstico</h2>
+            <div id="console"></div>
+        </div>
+    </div>
+
+    <script>
+        const consoleDiv = document.getElementById('console');
+        const statusSpan = document.getElementById('status');
+        const currentPathSpan = document.getElementById('currentPath');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
+            consoleDiv.innerHTML += `[${timestamp}] ${prefix} ${message}<br>`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        function clearConsole() {
+            consoleDiv.innerHTML = '';
+            log('Consola limpiada');
+        }
+        
+        function testPath(path) {
+            const frame = document.getElementById('gameFrame');
+            currentPathSpan.textContent = path;
+            statusSpan.textContent = 'Cargando...';
+            statusSpan.style.color = '#ffd700';
+            
+            log(`Intentando cargar: ${path}`);
+            frame.src = path;
+        }
+        
+        function reloadFrame() {
+            const frame = document.getElementById('gameFrame');
+            const currentSrc = frame.src;
+            log(`Recargando: ${currentSrc}`);
+            frame.src = '';
+            setTimeout(() => {
+                frame.src = currentSrc;
+            }, 100);
+        }
+        
+        // Monitorear el estado del iframe
+        window.addEventListener('load', function() {
+            const gameFrame = document.getElementById('gameFrame');
+            
+            log('Página de prueba cargada');
+            log(`Intentando cargar juego desde: ${gameFrame.src}`);
+            
+            gameFrame.addEventListener('load', function() {
+                log('Evento load del iframe disparado', 'success');
+                statusSpan.textContent = 'Cargado ✓';
+                statusSpan.style.color = '#0f0';
+                
+                // Verificar si el contenido está vacío
+                setTimeout(function() {
+                    try {
+                        const iframeDoc = gameFrame.contentDocument || gameFrame.contentWindow.document;
+                        if (iframeDoc.body) {
+                            const bodyContent = iframeDoc.body.innerHTML;
+                            if (bodyContent.trim() === '') {
+                                log('ADVERTENCIA: El iframe cargó pero el body está vacío', 'error');
+                                statusSpan.textContent = 'Cargado pero vacío ⚠️';
+                                statusSpan.style.color = '#ff0';
+                            } else {
+                                log(`Contenido del body detectado (${bodyContent.length} caracteres)`, 'success');
+                            }
+                        }
+                    } catch (e) {
+                        log(`No se puede acceder al contenido del iframe: ${e.message}`);
+                        log('Esto es normal si el juego está en un dominio diferente');
+                    }
+                }, 1000);
+            });
+            
+            gameFrame.addEventListener('error', function(e) {
+                log('Error al cargar el iframe', 'error');
+                statusSpan.textContent = 'Error ✗';
+                statusSpan.style.color = '#f00';
+            });
+            
+            // Verificar disponibilidad del archivo
+            fetch('game/index.html', { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        log('✅ El archivo game/index.html existe y es accesible', 'success');
+                    } else {
+                        log(`❌ Error HTTP ${response.status}: El archivo no está disponible`, 'error');
+                    }
+                })
+                .catch(error => {
+                    log(`❌ No se pudo verificar el archivo: ${error.message}`, 'error');
+                });
+        });
+        
+        // Capturar errores de la consola del navegador
+        window.addEventListener('error', function(e) {
+            log(`Error de JavaScript: ${e.message}`, 'error');
+        });
+    </script>
+</body>
+</html>
