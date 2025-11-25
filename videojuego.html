@@ -358,8 +358,10 @@
                         src="game/index.html" 
                         title="Destellos - El Juego" 
                         allowfullscreen
-                        allow="autoplay; gamepad; microphone; camera"
-                        id="gameFrame">
+                        allow="autoplay; gamepad; microphone; camera; accelerometer; gyroscope"
+                        id="gameFrame"
+                        onload="console.log('Game loaded successfully')"
+                        onerror="console.error('Error loading game')">
                     </iframe>
                 </div>
                 <p class="game-label">JUEGO INTERACTIVO</p>
