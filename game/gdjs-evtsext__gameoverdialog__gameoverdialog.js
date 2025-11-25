@@ -68,7 +68,7 @@ let isConditionTrue_0 = false;
 {
 gdjs.copyArray(eventsFunctionContext.getObjects("EndScreenSubHeader"), gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1);
 {for(var i = 0, len = gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1.length ;i < len;++i) {
-    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("¡Recolectaste " + ("" + eventsFunctionContext.getArgument("Score")) + " chispitas mariposa!");
+    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("¡Recolectaste " + ("" + Math.floor(eventsFunctionContext.getArgument("Score") / 100)) + " chispitas mariposa!");
 }
 }
 }
