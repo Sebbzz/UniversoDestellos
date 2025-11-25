@@ -1,4 +1,3 @@
-
 gdjs.evtsExt__GameOverDialog__GameOverDialog = gdjs.evtsExt__GameOverDialog__GameOverDialog || {};
 
 /**
@@ -69,7 +68,7 @@ let isConditionTrue_0 = false;
 {
 gdjs.copyArray(eventsFunctionContext.getObjects("EndScreenSubHeader"), gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1);
 {for(var i = 0, len = gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1.length ;i < len;++i) {
-    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("You got " + ("" + eventsFunctionContext.getArgument("Score")) + " points!");
+    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenSubHeaderObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("¡Recolectaste " + ("" + eventsFunctionContext.getArgument("Score")) + " chispitas mariposa!");
 }
 }
 }
@@ -94,7 +93,7 @@ isConditionTrue_0 = false;
 if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("EndScreenChallengeText"), gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1);
 {for(var i = 0, len = gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1.length ;i < len;++i) {
-    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("Can you get " + ("" + eventsFunctionContext.getObjects("Object")[0]._getMaxScore()) + " points?");
+    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("¿Puedes conseguir el puntaje máximo?");
 }
 }
 }
@@ -112,7 +111,7 @@ isConditionTrue_0 = false;
 if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("EndScreenChallengeText"), gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1);
 {for(var i = 0, len = gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1.length ;i < len;++i) {
-    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("You got the highest number of points!");
+    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("¡Recolectaste las 7 chispitas mariposa!");
 }
 }
 }
