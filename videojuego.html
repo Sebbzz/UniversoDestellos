@@ -358,14 +358,16 @@
                         src="game/index.html" 
                         title="Destellos - El Juego" 
                         allowfullscreen
-                        allow="autoplay; gamepad; microphone; camera; accelerometer; gyroscope"
+                        allow="autoplay; gamepad; microphone; camera; accelerometer; gyroscope; fullscreen"
                         id="gameFrame"
-                        onload="console.log('Game loaded successfully')"
-                        onerror="console.error('Error loading game')">
+                        scrolling="no"
+                        frameborder="0"
+                        style="border: none;">
                     </iframe>
                 </div>
                 <p class="game-label">JUEGO INTERACTIVO</p>
                 <button class="fullscreen-button" onclick="toggleFullscreen()">Pantalla Completa</button>
+                <button class="fullscreen-button" onclick="reloadGame()" style="margin-left: 10px; background-color: rgba(255, 215, 0, 0.8);">Recargar Juego</button>
             </div>
 
             <!-- Controles del juego -->
@@ -466,6 +468,39 @@
                 }
             }
         }
+
+        // Función para recargar el juego
+        function reloadGame() {
+            const gameFrame = document.getElementById('gameFrame');
+            gameFrame.src = gameFrame.src;
+        }
+
+        // Detectar cuando el iframe está cargado
+        window.addEventListener('load', function() {
+            const gameFrame = document.getElementById('gameFrame');
+            
+            gameFrame.addEventListener('load', function() {
+                console.log('✅ Juego cargado exitosamente');
+            });
+
+            gameFrame.addEventListener('error', function() {
+                console.error('❌ Error al cargar el juego');
+                console.log('Verifica que el archivo game/index.html existe');
+            });
+
+            // Verificar si hay problemas de CORS
+            setTimeout(function() {
+                try {
+                    const iframeDoc = gameFrame.contentDocument || gameFrame.contentWindow.document;
+                    if (!iframeDoc.body || iframeDoc.body.innerHTML === '') {
+                        console.warn('⚠️ El iframe puede estar bloqueado por CORS o el archivo no existe');
+                        console.log('Abre la consola del navegador (F12) para ver más detalles');
+                    }
+                } catch (e) {
+                    console.log('ℹ️ No se puede acceder al contenido del iframe (normal en algunos casos)');
+                }
+            }, 2000);
+        });
     </script>
 </body>
 </html>
