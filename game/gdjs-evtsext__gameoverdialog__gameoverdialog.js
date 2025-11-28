@@ -93,7 +93,7 @@ isConditionTrue_0 = false;
 if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("EndScreenChallengeText"), gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1);
 {for(var i = 0, len = gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1.length ;i < len;++i) {
-    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("¿Puedes conseguir el puntaje máximo?");
+    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("");
 }
 }
 }
@@ -111,7 +111,7 @@ isConditionTrue_0 = false;
 if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("EndScreenChallengeText"), gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1);
 {for(var i = 0, len = gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1.length ;i < len;++i) {
-    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("¡Recolectaste las 7 chispitas mariposa!");
+    gdjs.evtsExt__GameOverDialog__GameOverDialog.GameOverDialog.prototype.SetScoreContext.GDEndScreenChallengeTextObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText("");
 }
 }
 }
