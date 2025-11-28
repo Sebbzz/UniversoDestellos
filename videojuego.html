@@ -173,28 +173,6 @@
             color: rgba(255, 215, 0, 0.7);
         }
 
-        /* Botón de pantalla completa */
-        .fullscreen-button {
-            background-color: #ffd700;
-            color: #0a1628;
-            padding: 12px 30px;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            font-family: 'Modeco Trial', sans-serif;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .fullscreen-button:hover {
-            background-color: #ffed4e;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            transform: scale(1.05);
-        }
-
         /* Info adicional */
         .info-section {
             margin: 40px 0;
@@ -391,9 +369,6 @@
                         style="border: none;">
                     </iframe>
                 </div>
-                <p class="game-label">JUEGO INTERACTIVO</p>
-                <button class="fullscreen-button" onclick="toggleFullscreen()">Pantalla Completa</button>
-                <button class="fullscreen-button" onclick="reloadGame()" style="margin-left: 10px; background-color: rgba(255, 215, 0, 0.8);">Recargar Juego</button>
             </div>
         </div>
 
@@ -452,25 +427,6 @@
         
         // Crear estrella fugaz cada cierto tiempo
         setInterval(createShootingStar, 3000);
-
-        // Función para pantalla completa
-        function toggleFullscreen() {
-            const gameWrapper = document.getElementById('gameWrapper');
-            
-            if (!document.fullscreenElement) {
-                if (gameWrapper.requestFullscreen) {
-                    gameWrapper.requestFullscreen();
-                } else if (gameWrapper.webkitRequestFullscreen) {
-                    gameWrapper.webkitRequestFullscreen();
-                } else if (gameWrapper.msRequestFullscreen) {
-                    gameWrapper.msRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
 
         // Función para recargar el juego
         function reloadGame() {
